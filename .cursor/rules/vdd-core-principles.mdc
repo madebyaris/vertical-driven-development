@@ -1,0 +1,112 @@
+---
+description: Vertical Driven Development (VDD) Core Principles - Business-first development focused on necessary changes only
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Vertical Driven Development (VDD) Core Principles
+
+## Philosophy
+
+Vertical Driven Development (VDD) is an architectural approach that organizes code around **business features and use cases** rather than technical layers. The core principle is: **Build only what SHOULD change, not what COULD change.**
+
+## Core Principles
+
+### 1. Business Requirement First
+
+- **Always start with the business requirement**, not technical architecture
+- Before writing any code, ask: "What business problem are we solving?"
+- Question if code is necessary before writing it
+- Avoid implementing features "we might need later"
+- Focus on delivering business value, not technical perfection
+
+### 2. Vertical Slice Organization
+
+- **Organize by feature/use case, NOT by technical layer**
+- Each vertical slice contains everything needed for a feature:
+  - User interface/API endpoints
+  - Business logic
+  - Data access/persistence
+- Group related code together vertically (along the axis of change)
+- **Minimize coupling between slices, maximize coupling within a slice**
+
+### 3. Simplicity First, Refactor When Needed
+
+- **Start with the simplest implementation** (Transaction Script pattern)
+- Avoid premature abstractions - they add complexity without proven benefit
+- Refactor when code smells emerge, not preemptively
+- Let patterns emerge from actual needs, not theoretical requirements
+- "You aren't gonna need it" (YAGNI) - don't build for hypothetical futures
+
+### 4. Change-Focused Development
+
+- **Only modify what needs to change** for the current requirement
+- Couple code along the axis of change (vertical slices)
+- Isolate changes to single slices when possible
+- Avoid shared abstractions unless multiple slices genuinely need them
+- Each slice should be independently testable and deployable
+
+## Anti-Patterns to Avoid
+
+### ❌ Over-Abstraction
+
+**Don't:**
+- Create repositories, services, or other abstractions "just in case"
+- Build generic solutions before specific needs are clear
+- Create shared layers for code used by only one feature
+
+**Do:**
+- Start concrete, extract when duplication actually occurs
+- Build abstractions when 3+ features genuinely need them
+- Keep abstractions close to their usage
+
+### ❌ Premature Optimization
+
+**Don't:**
+- Optimize for performance before measuring actual bottlenecks
+- Build complex caching before knowing if it's needed
+- Create elaborate query optimization before understanding usage patterns
+
+**Do:**
+- Measure first, optimize second
+- Start simple, optimize when real problems emerge
+- Focus on business value delivery
+
+### ❌ Layer-First Thinking
+
+**Don't:**
+- Organize code by technical layers (Controllers → Services → Repositories)
+- Force all features through the same architectural pattern
+- Create "shared" layers that couple unrelated features
+
+**Do:**
+- Organize by business features
+- Let each slice choose its own internal structure
+- Share code only when multiple slices genuinely benefit
+
+## Integration with SDD (Spec-Driven Development)
+
+When using the SDD toolkit (spec-kit-command-cursor):
+
+1. **Use `/brief` for most features** (80% of cases) - quick 30-minute planning
+2. **Full SDD workflow** for complex features (20% of cases):
+   - `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
+3. **Feature briefs should describe complete vertical slices**, not just one layer
+4. **Plans should focus on slice independence** and minimal cross-slice dependencies
+5. **Tasks should follow vertical development steps**: UI → Logic → Data in one slice
+
+## Decision Framework
+
+Before writing code, ask:
+
+1. **Is this required by the current business requirement?** If no, don't build it.
+2. **Does this belong in the current vertical slice?** If no, consider if it needs its own slice.
+3. **Is this the simplest solution?** If no, simplify first.
+4. **Will this change with other features?** If no, keep it in the slice. If yes, consider extraction carefully.
+
+## References
+
+- [Jimmy Bogard - Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)
+- [SSENSE - Vertical Software Development](https://medium.com/ssense-tech/vertical-software-development-495b73f7fcdf)
+- [Spec-Kit Command Cursor](https://github.com/madebyaris/spec-kit-command-cursor)

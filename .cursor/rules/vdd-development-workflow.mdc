@@ -1,0 +1,236 @@
+---
+description: Vertical Driven Development Workflow - Step-by-step process for building features vertically
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Vertical Driven Development Workflow
+
+## Development Process
+
+### Step 1: Start with the Happy Path
+
+**Always begin with the simplest, most direct implementation of the happy path.**
+
+- Implement the core user flow first
+- Ignore edge cases initially (add them incrementally)
+- Use the simplest data structure that works
+- Avoid error handling complexity until the happy path works
+
+**Example:**
+```typescript
+// Start here - simple, direct
+async function createOrder(items: Item[]) {
+  const order = { items, total: calculateTotal(items) };
+  await saveOrder(order);
+  return order;
+}
+```
+
+**Not this:**
+```typescript
+// Don't start with abstractions
+class OrderService {
+  constructor(
+    private orderRepository: IOrderRepository,
+    private validator: IOrderValidator,
+    private calculator: IPriceCalculator
+  ) {}
+  // ... complex abstraction
+}
+```
+
+### Step 2: Build Vertically, Not Horizontally
+
+**Develop one complete vertical slice at a time**, not one layer across all features.
+
+**Vertical Development (✅ Correct):**
+1. Build UI for Feature A
+2. Build logic for Feature A
+3. Build data access for Feature A
+4. Test Feature A end-to-end
+5. Move to Feature B
+
+**Horizontal Development (❌ Avoid):**
+1. Build all UI components
+2. Build all business logic
+3. Build all data access
+4. Try to wire it all together
+
+### Step 3: Add Complexity Incrementally
+
+**Add complexity only when the simple solution shows its limitations.**
+
+1. **Start Simple**: Transaction Script pattern (procedural code in handler/controller)
+2. **Add Validation**: When validation needs emerge
+3. **Extract Domain Logic**: When business rules become complex
+4. **Add Abstractions**: When duplication appears across 3+ slices
+
+**Refactoring Triggers:**
+- Code duplication across multiple slices → Extract shared code
+- Complex conditional logic → Extract to domain methods
+- Large handler/controller → Split into smaller functions
+- Testing becomes difficult → Extract testable units
+
+### Step 4: Test Per Slice
+
+**Each vertical slice should be independently testable.**
+
+- Write tests that cover the entire slice (end-to-end)
+- Mock external dependencies (databases, APIs) at slice boundaries
+- Avoid testing internal implementation details
+- Focus on behavior, not structure
+
+**Test Structure:**
+```
+features/
+  create-order/
+    create-order.test.ts  # Tests entire slice
+    create-order.ts       # Implementation
+```
+
+## When to Refactor vs Keep Simple
+
+### Keep It Simple When:
+- ✅ Code is used by only one feature
+- ✅ Logic is straightforward and easy to understand
+- ✅ No duplication exists yet
+- ✅ Tests are easy to write
+- ✅ Changes are isolated to one slice
+
+### Refactor When:
+- ✅ Same logic appears in 3+ different slices
+- ✅ Code becomes hard to understand or test
+- ✅ Business rules become complex
+- ✅ Performance issues emerge (measure first!)
+
+### Refactoring Guidelines
+
+1. **Extract Shared Code**: Only when 3+ slices need it
+2. **Move to Domain**: When business logic becomes complex
+3. **Split Large Functions**: When single function does too much
+4. **Add Abstractions**: When concrete implementations vary significantly
+
+## Code Organization Patterns
+
+### Pattern 1: Feature Folder Structure
+
+```
+features/
+  create-order/
+    create-order.api.ts      # API endpoint/route
+    create-order.handler.ts  # Business logic
+    create-order.repository.ts # Data access
+    create-order.types.ts    # Types for this feature
+    create-order.test.ts     # Tests
+```
+
+### Pattern 2: Single File for Simple Features
+
+For very simple features, a single file is acceptable:
+
+```
+features/
+  get-user-profile/
+    get-user-profile.ts  # Everything in one file
+```
+
+### Pattern 3: CQRS Pattern (When Appropriate)
+
+For complex features, separate commands and queries:
+
+```
+features/
+  order-management/
+    commands/
+      create-order.ts
+      cancel-order.ts
+    queries/
+      get-order.ts
+      list-orders.ts
+```
+
+## Vertical Development Steps
+
+### For a New Feature:
+
+1. **Define the Slice**: What user action/use case does this represent?
+2. **Start with UI/API**: Create the entry point (form, API endpoint, etc.)
+3. **Add Business Logic**: Implement the core logic in the handler
+4. **Add Data Access**: Persist or retrieve data as needed
+5. **Test End-to-End**: Verify the entire slice works
+6. **Add Edge Cases**: Handle errors, validation, etc.
+7. **Refactor if Needed**: Only if code smells appear
+
+### Example: Adding "Create Order" Feature
+
+**Step 1: API Endpoint**
+```typescript
+// features/create-order/create-order.api.ts
+app.post('/orders', async (req, res) => {
+  const order = await createOrder(req.body.items);
+  res.json(order);
+});
+```
+
+**Step 2: Handler Logic**
+```typescript
+// features/create-order/create-order.handler.ts
+async function createOrder(items: Item[]) {
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+  const order = { id: generateId(), items, total, createdAt: new Date() };
+  await saveOrder(order);
+  return order;
+}
+```
+
+**Step 3: Data Access**
+```typescript
+// features/create-order/create-order.repository.ts
+async function saveOrder(order: Order) {
+  await db.orders.insert(order);
+}
+```
+
+**Step 4: Test**
+```typescript
+// features/create-order/create-order.test.ts
+test('creates order with items', async () => {
+  const order = await createOrder([{ price: 10 }, { price: 20 }]);
+  expect(order.total).toBe(30);
+});
+```
+
+## Common Workflow Mistakes
+
+### ❌ Building All Layers First
+**Wrong:** Build all repositories, then all services, then all controllers
+**Right:** Build one complete feature slice at a time
+
+### ❌ Premature Abstraction
+**Wrong:** Create `IOrderRepository` before knowing what you need
+**Right:** Use concrete implementation, extract interface later if needed
+
+### ❌ Over-Engineering Simple Features
+**Wrong:** Complex domain model for a simple CRUD operation
+**Right:** Simple handler function for straightforward operations
+
+### ❌ Ignoring the Happy Path
+**Wrong:** Handle all edge cases before basic flow works
+**Right:** Make happy path work first, add edge cases incrementally
+
+## Integration with Planning
+
+When planning a feature:
+
+1. **Identify the Vertical Slice**: What user action/use case?
+2. **List Required Components**: UI, logic, data (all in one slice)
+3. **Estimate as One Unit**: Don't estimate layers separately
+4. **Plan for Independence**: Ensure slice doesn't depend on other slices
+
+## References
+
+- See `vdd-core-principles.mdc` for core VDD philosophy
+- See `vdd-sdd-integration.mdc` for SDD workflow integration
+- See `docs/VDD-GUIDELINES.md` for detailed examples

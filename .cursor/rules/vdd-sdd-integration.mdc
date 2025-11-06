@@ -1,0 +1,298 @@
+---
+description: VDD Integration with Spec-Driven Development (SDD) Toolkit - How to use SDD commands for vertical slice development
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# VDD Integration with Spec-Driven Development (SDD)
+
+## Overview
+
+Vertical Driven Development (VDD) and Spec-Driven Development (SDD) are complementary approaches:
+
+- **SDD** provides structure and planning before coding
+- **VDD** ensures implementation focuses on business requirements and vertical slices
+- Together, they ensure well-planned, business-focused development
+
+## SDD Toolkit Integration
+
+When using [spec-kit-command-cursor](https://github.com/madebyaris/spec-kit-command-cursor), apply VDD principles throughout the SDD workflow.
+
+### Command Selection Strategy
+
+#### Use `/brief` for Most Features (80% of cases)
+
+**When to use `/brief`:**
+- Simple to moderate complexity features
+- Clear business requirements
+- Single vertical slice
+- 30-minute planning is sufficient
+
+**VDD Focus:**
+- Brief should describe the **complete vertical slice** (UI → Logic → Data)
+- Focus on business value, not technical architecture
+- Keep it simple - avoid over-planning
+
+**Example:**
+```
+/brief user-registration Allow new users to create accounts with email and password
+```
+
+The brief should cover:
+- Registration form/UI
+- Validation logic
+- User creation in database
+- All in one vertical slice
+
+#### Use Full SDD Workflow for Complex Features (20% of cases)
+
+**When to use full workflow:**
+- Complex features requiring research
+- Multiple related vertical slices
+- Significant technical decisions needed
+- Integration with external systems
+
+**Workflow:**
+1. `/research [feature-name]` - Research best practices
+2. `/specify [feature-name]` - Create detailed specification
+3. `/plan [feature-name]` - Create technical plan
+4. `/tasks [feature-name]` - Break down into tasks
+5. `/implement [feature-name]` - Execute implementation
+
+**VDD Focus at Each Stage:**
+- **Research**: Focus on vertical slice patterns, not layered architecture
+- **Specify**: Describe complete vertical slice, not individual layers
+- **Plan**: Plan for slice independence, minimal cross-slice dependencies
+- **Tasks**: Organize tasks vertically (UI → Logic → Data per slice)
+- **Implement**: Build one complete slice at a time
+
+## Feature Brief Structure for Vertical Slices
+
+When creating a feature brief with `/brief`, structure it around the vertical slice:
+
+### Required Sections:
+
+1. **Business Requirement**
+   - What problem are we solving?
+   - Who is the user?
+   - What value does this provide?
+
+2. **Vertical Slice Description**
+   - Complete user flow (end-to-end)
+   - UI/API entry point
+   - Business logic needed
+   - Data requirements
+
+3. **Slice Boundaries**
+   - What's included in this slice?
+   - What's explicitly excluded?
+   - Dependencies on other slices (minimize these)
+
+4. **Success Criteria**
+   - How do we know it works?
+   - What does "done" look like?
+
+### Example Brief Structure:
+
+```markdown
+# Feature Brief: User Registration
+
+## Business Requirement
+Allow new users to create accounts to access the platform.
+
+## Vertical Slice
+- **UI**: Registration form with email, password, confirm password
+- **Logic**: Validate input, check email uniqueness, hash password
+- **Data**: Create user record in database
+- **Output**: Return success/error, redirect to login
+
+## Slice Boundaries
+- **Included**: Registration form, validation, user creation
+- **Excluded**: Email verification (separate slice), login (separate slice)
+- **Dependencies**: User database table (may need to create)
+
+## Success Criteria
+- User can submit registration form
+- Invalid inputs show appropriate errors
+- Valid registration creates user account
+- Duplicate emails are rejected
+```
+
+## Planning Vertical Slices
+
+When using `/plan`, ensure the plan focuses on vertical slice architecture:
+
+### Plan Should Include:
+
+1. **Slice Structure**
+   - How is the feature organized as a vertical slice?
+   - What files/components are in the slice?
+
+2. **Technology Choices**
+   - Justify choices based on slice needs, not generic architecture
+   - Keep it simple - choose simplest solution that works
+
+3. **Slice Independence**
+   - How does this slice avoid coupling with other slices?
+   - What shared code is truly needed?
+
+4. **Implementation Approach**
+   - Start simple (Transaction Script)
+   - When to refactor (if needed)
+
+### Example Plan Structure:
+
+```markdown
+# Technical Plan: User Registration
+
+## Slice Structure
+```
+features/
+  user-registration/
+    registration-form.tsx      # UI component
+    registration-handler.ts    # Business logic
+    user-repository.ts         # Data access
+    registration.types.ts    # Types
+```
+
+## Technology Choices
+- **Form**: React Hook Form (simple, no need for complex form library)
+- **Validation**: Zod (lightweight, TypeScript-first)
+- **Password Hashing**: bcrypt (standard, secure)
+- **Database**: Direct SQL queries (no ORM needed for simple CRUD)
+
+## Slice Independence
+- No dependencies on other feature slices
+- Uses shared database connection (infrastructure, not business logic)
+- User type defined in slice (not shared domain model yet)
+
+## Implementation Approach
+1. Start with simple handler function (Transaction Script)
+2. Add validation incrementally
+3. Extract to domain model only if logic becomes complex
+```
+
+## Task Breakdown for Vertical Development
+
+When using `/tasks`, organize tasks to follow vertical development:
+
+### Task Organization:
+
+**❌ Wrong (Horizontal):**
+- Task 1: Create all UI components
+- Task 2: Create all business logic
+- Task 3: Create all data access
+- Task 4: Wire everything together
+
+**✅ Right (Vertical):**
+- Task 1: Build complete registration slice (UI + Logic + Data)
+- Task 2: Add validation and error handling
+- Task 3: Add edge cases (duplicate email, weak password)
+- Task 4: Refactor if needed (only if code smells appear)
+
+### Task Structure:
+
+Each task should:
+- Be a complete vertical slice or increment
+- Be independently testable
+- Deliver business value
+- Avoid partial implementations across layers
+
+### Example Task List:
+
+```markdown
+# Tasks: User Registration
+
+## Task 1: Basic Registration Slice (2 days)
+- [ ] Create registration form UI
+- [ ] Implement registration handler (simple version)
+- [ ] Add database user creation
+- [ ] End-to-end test: user can register
+
+## Task 2: Validation (1 day)
+- [ ] Add email format validation
+- [ ] Add password strength validation
+- [ ] Add confirm password matching
+- [ ] Test validation errors
+
+## Task 3: Duplicate Email Handling (1 day)
+- [ ] Check email uniqueness in database
+- [ ] Return appropriate error message
+- [ ] Test duplicate email scenario
+
+## Task 4: Refactor if Needed (if code smells appear)
+- [ ] Extract validation logic if handler becomes large
+- [ ] Extract domain model if business rules become complex
+- [ ] Only if actually needed!
+```
+
+## Using `/evolve` for Living Documentation
+
+The `/evolve` command helps keep specs aligned during development:
+
+**VDD Focus:**
+- Update specs to reflect actual vertical slice structure
+- Document what was built, not what was planned
+- Keep slice boundaries clear
+- Note any refactoring decisions and why
+
+## Implementation with `/implement`
+
+When using `/implement`, ensure VDD principles are followed:
+
+1. **Build Vertically**: One complete slice at a time
+2. **Start Simple**: Transaction Script pattern first
+3. **Add Incrementally**: Complexity only when needed
+4. **Test Per Slice**: End-to-end tests for each slice
+5. **Refactor When Needed**: Only when code smells appear
+
+## Common Integration Mistakes
+
+### ❌ Planning Layers Instead of Slices
+
+**Wrong:**
+- Plan: "Create repository layer, service layer, controller layer"
+- Tasks: "Task 1: All repositories, Task 2: All services..."
+
+**Right:**
+- Plan: "Create registration slice with UI, handler, and data access"
+- Tasks: "Task 1: Complete registration slice"
+
+### ❌ Over-Specifying Architecture
+
+**Wrong:**
+- Spec includes: "Use repository pattern, service layer, DTOs..."
+- Focuses on technical architecture
+
+**Right:**
+- Spec includes: "User fills form, system validates, creates account"
+- Focuses on business flow
+
+### ❌ Breaking Tasks by Layer
+
+**Wrong:**
+- Task 1: Build UI
+- Task 2: Build logic
+- Task 3: Build data access
+
+**Right:**
+- Task 1: Build complete feature slice
+- Task 2: Add validation
+- Task 3: Add edge cases
+
+## Best Practices
+
+1. **Use `/brief` by default** - Most features are simple enough
+2. **Full SDD for complex features** - When research or multiple slices needed
+3. **Keep specs focused on business** - Not technical architecture
+4. **Plan for slice independence** - Minimize cross-slice dependencies
+5. **Tasks follow vertical development** - Complete slices, not layers
+6. **Evolve specs as you build** - Keep documentation aligned with reality
+
+## References
+
+- [Spec-Kit Command Cursor](https://github.com/madebyaris/spec-kit-command-cursor)
+- See `vdd-core-principles.mdc` for VDD philosophy
+- See `vdd-development-workflow.mdc` for development process
+- See `docs/SDD-INTEGRATION.md` for detailed integration guide
