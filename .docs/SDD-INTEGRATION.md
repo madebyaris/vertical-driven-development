@@ -660,5 +660,5 @@ async function createOrder(userId: string, items: Item[]) {
 - See `.cursor/rules/vdd-core-principles.mdc` for VDD philosophy
 - See `.cursor/rules/vdd-development-workflow.mdc` for development process
 - See `.cursor/rules/vdd-sdd-integration.mdc` for integration rules
-- See `docs/VDD-GUIDELINES.md` for detailed VDD guidelines
+- See `.docs/VDD-GUIDELINES.md` for detailed VDD guidelines
 

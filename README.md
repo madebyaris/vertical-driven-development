@@ -49,14 +49,14 @@ This VDD ruleset integrates seamlessly with the [Spec-Kit Command Cursor](https:
 - **Use `/vdd-build` or `/vdd-all-in-one` for complete apps** - Build entire applications with multiple vertical slices in one command
 - All specs and plans focus on vertical slices
 
-See [SDD Integration Guide](docs/SDD-INTEGRATION.md) for details.
+See [SDD Integration Guide](.docs/SDD-INTEGRATION.md) for details.
 
 ## 📚 Documentation
 
 ### Core Documentation
 
-- **[VDD Guidelines](docs/VDD-GUIDELINES.md)** - Comprehensive guide with examples, patterns, and best practices
-- **[SDD Integration](docs/SDD-INTEGRATION.md)** - How to use VDD with Spec-Driven Development toolkit
+- **[VDD Guidelines](.docs/VDD-GUIDELINES.md)** - Comprehensive guide with examples, patterns, and best practices
+- **[SDD Integration](.docs/SDD-INTEGRATION.md)** - How to use VDD with Spec-Driven Development toolkit
 
 ### Cursor Rules
 
@@ -216,8 +216,8 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## 🔗 Quick Links
 
-- [VDD Guidelines](docs/VDD-GUIDELINES.md) - Detailed guidelines and examples
-- [SDD Integration](docs/SDD-INTEGRATION.md) - Using VDD with SDD toolkit
+- [VDD Guidelines](.docs/VDD-GUIDELINES.md) - Detailed guidelines and examples
+- [SDD Integration](.docs/SDD-INTEGRATION.md) - Using VDD with SDD toolkit
 - [Core Principles](.cursor/rules/vdd-core-principles.mdc) - VDD philosophy
 - [Development Workflow](.cursor/rules/vdd-development-workflow.mdc) - Step-by-step process
 - [SDD Integration Rules](.cursor/rules/vdd-sdd-integration.mdc) - Integration guidelines
