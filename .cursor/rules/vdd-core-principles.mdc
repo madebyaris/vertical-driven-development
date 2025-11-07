@@ -1,8 +1,27 @@
 ---
 description: Vertical Driven Development (VDD) Core Principles - Business-first development focused on necessary changes only
 globs:
-  - "**/*"
-alwaysApply: true
+  - "**/features/**"
+  - "**/src/**"
+  - "**/app/**"
+  - "**/lib/**"
+  - "**/components/**"
+  - "**/pages/**"
+  - "**/routes/**"
+  - "**/handlers/**"
+  - "**/controllers/**"
+  - "**/services/**"
+  - "**/domain/**"
+  - "**/models/**"
+  - "**/entities/**"
+  - "**/repositories/**"
+  - "**/tests/**"
+  - "**/test/**"
+  - "**/__tests__/**"
+  - "**/*.spec.md"
+  - "**/specs/**"
+  - "**/briefs/**"
+  - "**/plans/**"
 ---
 
 # Vertical Driven Development (VDD) Core Principles

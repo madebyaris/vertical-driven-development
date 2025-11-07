@@ -1,8 +1,23 @@
 ---
 description: Vertical Driven Development Workflow - Step-by-step process for building features vertically
 globs:
-  - "**/*"
-alwaysApply: true
+  - "**/features/**"
+  - "**/src/**"
+  - "**/app/**"
+  - "**/lib/**"
+  - "**/components/**"
+  - "**/pages/**"
+  - "**/routes/**"
+  - "**/handlers/**"
+  - "**/controllers/**"
+  - "**/services/**"
+  - "**/domain/**"
+  - "**/models/**"
+  - "**/entities/**"
+  - "**/repositories/**"
+  - "**/tests/**"
+  - "**/test/**"
+  - "**/__tests__/**"
 ---
 
 # Vertical Driven Development Workflow

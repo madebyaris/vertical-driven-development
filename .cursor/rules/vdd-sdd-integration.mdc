@@ -1,8 +1,27 @@
 ---
 description: VDD Integration with Spec-Driven Development (SDD) Toolkit - How to use SDD commands for vertical slice development
 globs:
-  - "**/*"
-alwaysApply: true
+  - "**/features/**"
+  - "**/src/**"
+  - "**/app/**"
+  - "**/lib/**"
+  - "**/components/**"
+  - "**/pages/**"
+  - "**/routes/**"
+  - "**/handlers/**"
+  - "**/controllers/**"
+  - "**/services/**"
+  - "**/domain/**"
+  - "**/models/**"
+  - "**/entities/**"
+  - "**/repositories/**"
+  - "**/tests/**"
+  - "**/test/**"
+  - "**/__tests__/**"
+  - "**/*.spec.md"
+  - "**/specs/**"
+  - "**/briefs/**"
+  - "**/plans/**"
 ---
 
 # VDD Integration with Spec-Driven Development (SDD)
@@ -66,6 +85,39 @@ The brief should cover:
 - **Plan**: Plan for slice independence, minimal cross-slice dependencies
 - **Tasks**: Organize tasks vertically (UI → Logic → Data per slice)
 - **Implement**: Build one complete slice at a time
+
+#### Use `/vdd-build` for Complete Apps/Features (All-in-One)
+
+**When to use `/vdd-build` (or `/vdd-all-in-one`):**
+- Building a complete application from scratch
+- Multiple vertical slices that need coordination
+- Want full SDD workflow applied to each slice automatically
+- Need a master plan with slice dependencies
+
+**What it does:**
+- Analyzes business requirements
+- Identifies all vertical slices
+- Creates full SDD workflow (research → specify → plan → tasks) for each slice
+- Organizes by business value and dependencies
+- Optionally implements all slices (`--implement` flag)
+
+**Example:**
+```
+/vdd-build e-commerce-platform "Full e-commerce with catalog, cart, checkout, and orders"
+```
+
+This creates:
+- Master plan with all vertical slices
+- Complete SDD workflow for each slice
+- Implementation roadmap with priorities
+- Option to build everything in one go
+
+**VDD Focus:**
+- Slices organized by business features, not technical layers
+- Each slice is complete (UI → Logic → Data)
+- Minimal coupling between slices
+- Maximum coupling within slices
+- Simple by default, complex when needed
 
 ## Feature Brief Structure for Vertical Slices
 
@@ -283,16 +335,19 @@ When using `/implement`, ensure VDD principles are followed:
 
 ## Best Practices
 
-1. **Use `/brief` by default** - Most features are simple enough
-2. **Full SDD for complex features** - When research or multiple slices needed
-3. **Keep specs focused on business** - Not technical architecture
-4. **Plan for slice independence** - Minimize cross-slice dependencies
-5. **Tasks follow vertical development** - Complete slices, not layers
-6. **Evolve specs as you build** - Keep documentation aligned with reality
+1. **Use `/brief` by default** - Most features are simple enough (80% of cases)
+2. **Full SDD for complex features** - When research or multiple slices needed (20% of cases)
+3. **Use `/vdd-build` for complete apps** - When building from scratch with multiple slices
+4. **Keep specs focused on business** - Not technical architecture
+5. **Plan for slice independence** - Minimize cross-slice dependencies
+6. **Tasks follow vertical development** - Complete slices, not layers
+7. **Evolve specs as you build** - Keep documentation aligned with reality
 
 ## References
 
 - [Spec-Kit Command Cursor](https://github.com/madebyaris/spec-kit-command-cursor)
+- See `.cursor/commands/vdd-build.mdc` for `/vdd-build` command documentation
+- See `.cursor/commands/vdd-all-in-one.mdc` for `/vdd-all-in-one` alias
 - See `vdd-core-principles.mdc` for VDD philosophy
 - See `vdd-development-workflow.mdc` for development process
 - See `docs/SDD-INTEGRATION.md` for detailed integration guide

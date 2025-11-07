@@ -46,6 +46,7 @@ This VDD ruleset integrates seamlessly with the [Spec-Kit Command Cursor](https:
 
 - Use `/brief` for most features (80% of cases)
 - Full SDD workflow for complex features (20% of cases)
+- **Use `/vdd-build` or `/vdd-all-in-one` for complete apps** - Build entire applications with multiple vertical slices in one command
 - All specs and plans focus on vertical slices
 
 See [SDD Integration Guide](docs/SDD-INTEGRATION.md) for details.
@@ -64,6 +65,13 @@ The following rules are automatically applied in Cursor:
 - **[vdd-core-principles.mdc](.cursor/rules/vdd-core-principles.mdc)** - Core VDD philosophy and principles
 - **[vdd-development-workflow.mdc](.cursor/rules/vdd-development-workflow.mdc)** - Step-by-step development process
 - **[vdd-sdd-integration.mdc](.cursor/rules/vdd-sdd-integration.mdc)** - SDD toolkit integration guidelines
+
+### Cursor Commands
+
+The following commands are available in Cursor:
+
+- **[/vdd-build](.cursor/commands/vdd-build.mdc)** - Build complete apps/features with VDD principles (combines SDD full-plan workflow)
+- **[/vdd-all-in-one](.cursor/commands/vdd-all-in-one.mdc)** - Alias for `/vdd-build`
 
 ## 🏗️ Architecture Comparison
 
