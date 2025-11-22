@@ -70,8 +70,8 @@ The following rules are automatically applied in Cursor:
 
 The following commands are available in Cursor:
 
-- **[/vdd-build](.cursor/commands/vdd-build.mdc)** - Build complete apps/features with VDD principles (combines SDD full-plan workflow)
-- **[/vdd-all-in-one](.cursor/commands/vdd-all-in-one.mdc)** - Alias for `/vdd-build`
+- **[/vdd-build](.cursor/commands/vdd-build.md)** - Build complete apps/features with VDD principles (combines SDD full-plan workflow)
+- **[/vdd-all-in-one](.cursor/commands/vdd-all-in-one.md)** - Alias for `/vdd-build`
 
 ## 🏗️ Architecture Comparison
 

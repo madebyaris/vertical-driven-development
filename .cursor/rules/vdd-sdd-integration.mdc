@@ -346,8 +346,8 @@ When using `/implement`, ensure VDD principles are followed:
 ## References
 
 - [Spec-Kit Command Cursor](https://github.com/madebyaris/spec-kit-command-cursor)
-- See `.cursor/commands/vdd-build.mdc` for `/vdd-build` command documentation
-- See `.cursor/commands/vdd-all-in-one.mdc` for `/vdd-all-in-one` alias
+- See `.cursor/commands/vdd-build.md` for `/vdd-build` command documentation
+- See `.cursor/commands/vdd-all-in-one.md` for `/vdd-all-in-one` alias
 - See `vdd-core-principles.mdc` for VDD philosophy
 - See `vdd-development-workflow.mdc` for development process
-- See `docs/SDD-INTEGRATION.md` for detailed integration guide
+- See `.docs/SDD-INTEGRATION.md` for detailed integration guide
